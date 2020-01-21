@@ -19,7 +19,7 @@ if __name__ == "__main__":
   for patient_id in range(args.num_patients):
     patient_name = "patient" + str(patient_id)
     ls_output = subprocess.Popen(["go", "run", client_path,
-                                  patient_name, args.ip])
+                                  patient_name, server_path])
     procs.append(ls_output)
 
   for p in procs:
