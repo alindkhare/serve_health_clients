@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"flag"
+	"os"
 	"io/ioutil"
 	"net"
 	"net/http"
@@ -10,7 +10,6 @@ import (
 	"math"
 	"math/rand"
 	"log"
-	"strconv"
 )
 
 var Maximum_backoff = 32000 //in millisecond
