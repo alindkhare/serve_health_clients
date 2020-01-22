@@ -8,28 +8,32 @@ import (
 	"time"
 )
 
-func MakeRequest(url string, ch chan<- string) {
+func MakeRequest(url string, ch chan<- string, http.DefaultClient client) {
 	start := time.Now()
-	resp, _ := http.Get(url)
+	resp, _ := client.Get(url)
 	secs := time.Since(start).Seconds()
 	body, _ := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
+	
 }
 func main() {
-	start := time.Now()
+	
 	patient_name := os.Args[1]
 	ip := os.Args[2]
 	fmt.Println(patient_name,ip)
+	client := http.DefaultClient
 	ch := make(chan string)
 	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&vtype=ECG"
 	fmt.Println(address)
+	start := time.Now()
 	for i := 0; i <= 3800; i++ {
 		// wait for 8 milliseconds to simulate the patient
 		// incoming data
 		time.Sleep(8 * time.Millisecond)
 		// This how actual client will send the result
 		
-		go MakeRequest(address, ch)
+		go MakeRequest(address, ch, client)
 		// This is how profiling result is send
 		//go MakeRequest("http://127.0.0.1:8000/RayServeProfile/hospital", ch)
 	}
