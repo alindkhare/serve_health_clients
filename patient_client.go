@@ -27,6 +27,7 @@ func MakeRequest(url string, ch chan<- string, client *http.Client) {
 			fmt.Println("handle error read response body")
 			fmt.Println(err)
 		}
+	}
 	
 }
 func main() {
