@@ -18,7 +18,7 @@ func MakeRequest(url string, ch chan<- string, client *http.Client) {
 	if err != nil || resp == nil {
 		fmt.Println("handle error get")
 		fmt.Println("on_disconnect: ", err)
-		on_disconnect(client, url, backoff_counter, ch)
+		// on_disconnect(client, url, backoff_counter, ch)
 	}
 	if resp != nil {
 		defer resp.Body.Close()
