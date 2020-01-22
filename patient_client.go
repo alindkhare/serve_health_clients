@@ -55,6 +55,7 @@ func main() {
 	ch := make(chan string)
 	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&vtype=ECG"
 	fmt.Println(address)
+	totalRequest := 3750
 	tr := &http.Transport{
 		DialContext:(&net.Dialer{
             Timeout:   300 * time.Second,
