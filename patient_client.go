@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func MakeRequest(url string, ch chan<- string, http.DefaultClient client) {
+func MakeRequest(url string, ch chan<- string, client http.DefaultClient) {
 	start := time.Now()
 	resp, _ := client.Get(url)
 	secs := time.Since(start).Seconds()
