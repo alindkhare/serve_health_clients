@@ -10,11 +10,23 @@ import (
 
 func MakeRequest(url string, ch chan<- string, client *http.Client) {
 	start := time.Now()
-	resp, _ := client.Get(url)
+	resp, err := client.Get(url)
 	secs := time.Since(start).Seconds()
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
+	// defer resp.Body.Close()
+	// body, _ := ioutil.ReadAll(resp.Body)
+	// ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
+	if err != nil || resp == nil {
+		fmt.Println("handle error get")
+		fmt.Println("on_disconnect: ", err)
+		on_disconnect(client, url, backoff_counter, ch)
+	}
+	if resp != nil {
+		defer resp.Body.Close()
+		body, errRead := ioutil.ReadAll(resp.Body)
+		if errRead != nil {
+			fmt.Println("handle error read response body")
+			fmt.Println(err)
+		}
 	
 }
 func main() {
