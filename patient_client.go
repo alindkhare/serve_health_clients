@@ -42,7 +42,7 @@ func MakeRequest(client *http.Client, url string, backoff_counter int, ch chan<-
 		body, errRead := ioutil.ReadAll(resp.Body)
 		if errRead != nil {
 			fmt.Println("handle error read response body")
-			log.Fatalf(err)
+			log.Fatalf(errRead)
 		}
 		ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
 	}
