@@ -26,7 +26,9 @@ func MakeRequest(url string, ch chan<- string, client *http.Client) {
 		if errRead != nil {
 			fmt.Println("handle error read response body")
 			fmt.Println(err)
-		}
+		}else{
+		ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
+	  }
 	}
 	
 }
