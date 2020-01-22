@@ -49,12 +49,13 @@ func MakeRequest(client *http.Client, url string, backoff_counter int, ch chan<-
 }
 
 func main() {
-	nreqPtr := flag.Int("nreq", 200, "an int to show how many request fired from client")
-	patientId:= flag.String("patientId", "0", "string to represent a patient client id")
-	flag.Parse()
-	totalRequest:= *nreqPtr
-	fmt.Println("patient id:", *patientId)
-	fmt.Println("total request:", totalRequest)
+	patient_name := os.Args[1]
+	ip := os.Args[2]
+	fmt.Println(patient_name,ip)
+	client := &http.Client{}
+	ch := make(chan string)
+	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&vtype=ECG"
+	fmt.Println(address)
 	tr := &http.Transport{
 		DialContext:(&net.Dialer{
             Timeout:   300 * time.Second,
@@ -75,8 +76,7 @@ func main() {
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send
 		// fmt.Printf("client %s alive : loop: %d ", *patientId, i)
-		hostAddr := "http://127.0.0.1:5000"
-		go MakeRequest(client, hostAddr + "/hospital?patient_id=" + *patientId + "&value="+ strconv.Itoa(i) + ".0&vtype=ECG", 0, ch)
+		go MakeRequest(client, address, 0, ch)
 	}
 	for i := 0; i <= totalRequest; i++ {
 		fmt.Println(<-ch)
