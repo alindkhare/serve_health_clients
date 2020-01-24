@@ -16,7 +16,7 @@ func main() {
 	ch := make(chan *gohttp.AsyncResponse)
 	totalRequest := 3750
 	for i := 0; i <= totalRequest; i++ {
-		req.FormData("").AsyncGet(address,ch)
+		req.FormData(map[string]string{"user": ""}).AsyncGet(address,ch)
 	}
 	for i:=0; i<= totalRequest; i++ {
 		op := <-ch
