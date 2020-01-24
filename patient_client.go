@@ -83,6 +83,6 @@ func main() {
 	}
 	fmt.Printf("client finished %.2fs elapsed\n", time.Since(start).Seconds())
 	// sleep 1 minute to make sure all previous request and socket file descriptor are closed
-	fmt.Println("start sleeping to make sure all socket killed")
-	time.Sleep(time.Minute * 1)
+	// fmt.Println("start sleeping to make sure all socket killed")
+	// time.Sleep(time.Minute * 1)
 }
