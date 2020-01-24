@@ -57,12 +57,12 @@ func main() {
 	fmt.Println(address)
 	totalRequest := 3750
 	tr := &http.Transport{
-		DialContext:(&net.Dialer{
-            Timeout:   300 * time.Second,
-        }).DialContext,
-		TLSHandshakeTimeout:   300 * time.Second,
-		MaxIdleConns:totalRequest,
-		IdleConnTimeout:300 * time.Second,
+		// DialContext:(&net.Dialer{
+  //           Timeout:   300 * time.Second,
+  //       }).DialContext,
+		// TLSHandshakeTimeout:   300 * time.Second,
+		MaxIdleConns:100,
+		// IdleConnTimeout:300 * time.Second,
 	}
 	client := &http.Client{Transport: tr, Timeout: 300 * time.Second}
 
