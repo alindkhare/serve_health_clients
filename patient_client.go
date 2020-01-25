@@ -64,10 +64,11 @@ func main() {
   //           Timeout:   300 * time.Second,
   //       }).DialContext,
 		// TLSHandshakeTimeout:   300 * time.Second,
-		MaxIdleConns:100,
+		// MaxIdleConns:100,
 		// IdleConnTimeout:300 * time.Second,
 	}
-	client := &http.Client{Transport: tr, Timeout: 300 * time.Second}
+	client := &http.Client{Transport: tr}
+	//Timeout: 300 * time.Second}
 
 	start := time.Now()
 	ch := make(chan string)
