@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"io/ioutil"
+	"runtime"
 	//"net"
 	"net/http"
 	"time"
@@ -48,9 +49,11 @@ func MakeRequest(client *http.Client, url string, backoff_counter int, ch chan<-
 }
 
 func main() {
+	runtime.GOMAXPROCS(5)
 	patient_name := os.Args[1]
 	ip := os.Args[2]
 	fmt.Println(patient_name,ip)
+
 	// client := &http.Client{}
 	// ch := make(chan string)
 	address := "http://"+ip+"/hospital?patient_name="+patient_name+"&value=0.0&vtype=ECG"
