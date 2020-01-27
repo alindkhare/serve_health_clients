@@ -42,7 +42,7 @@ func MakeRequest(client *http.Client, url string, backoff_counter int, ch chan<-
 		body, errRead := ioutil.ReadAll(resp.Body)
 		if errRead != nil {
 			fmt.Println("handle error read response body")
-			log.Fatalf(err)
+			log.Fatalf("err: ", err)
 		}
 		ch <- fmt.Sprintf("%.2f elapsed with response length: %s %s", secs, body, url)
 	}
@@ -75,7 +75,7 @@ func main() {
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send
 		// fmt.Printf("client %s alive : loop: %d ", *patientId, i)
-		hostAddr := "http://127.0.0.1:5000"
+		hostAddr := "http://130.207.25.147:8000"
 		go MakeRequest(client, hostAddr + "/hospital?patient_id=" + *patientId + "&value="+ strconv.Itoa(i) + ".0&vtype=ECG", 0, ch)
 	}
 	for i := 0; i <= totalRequest; i++ {
