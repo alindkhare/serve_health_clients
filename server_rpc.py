@@ -1,11 +1,10 @@
+import os
 import socket
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
 
 from fire_clients import run_patient_client
 from jsonrpc import JSONRPCResponseManager, dispatcher
-
-server_port=4000
 
 @dispatcher.add_method
 def fire_client(**kwargs):
@@ -33,5 +32,11 @@ def application(request):
     return Response(response.json, mimetype='application/json')
 
 if __name__ == '__main__':
-    print("RPC server unning on IPv4 addr: {}".format(socket.gethostbyname(socket.gethostname())))
-    run_simple('localhost', server_port, application)
+    gw = os.popen("ip -4 route show default").read().split()
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s.connect((gw[2], 0))
+    IPv4addr = s.getsockname()[0]  #for where the server of patient_client.go request will be executed
+    server_port=4000
+    
+    print("RPC server unning on IPv4 addr: {}".format(IPv4addr))
+    run_simple(IPv4addr, server_port, application)
