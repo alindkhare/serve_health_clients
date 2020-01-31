@@ -8,8 +8,8 @@ import (
 	//"net"
 	"net/http"
 	"time"
-	"math"
-	"math/rand"
+	//"math"
+	//"math/rand"
 	"log"
 )
 
