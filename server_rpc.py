@@ -9,18 +9,19 @@ from jsonrpc import JSONRPCResponseManager, dispatcher
 @dispatcher.add_method
 def fire_client(**kwargs):
     resp = ""
-    if ("npatient" in kwargs.keys()) and ("serve_ip" in kwargs.keys()) and ("serve_port" in kwargs.keys()):
+    if ("npatient" in kwargs.keys()) and ("serve_ip" in kwargs.keys()) and ("serve_port" in kwargs.keys()) and ("go_client_name" in kwargs.keys()):
         num_patients = kwargs.get("npatient")
         serve_ip = kwargs.get("serve_ip")
         serve_port = kwargs.get("serve_port")
+        go_client_name = kwargs.get("go_client_name")
 
-        resp += "runing valid request npatient={}, serve_ip={}, serve_port={} ".format(num_patients, serve_ip, serve_port)
+        resp += "runing valid request client={}.go npatient={}, serve_ip={}, serve_port={} ".format(go_client_name, num_patients, serve_ip, serve_port)
         server_path = serve_ip + ":" + str(serve_port)
-        run_patient_client(server_path, num_patients)
+        run_patient_client(server_path, num_patients, str(go_client_name))
     else:
-        resp += "invalid request, use default npatient=1, ip=localhost, port=8000 "
+        resp += "invalid request, use default client=patient_client.go npatient=1, ip=localhost, port=8000 "
         server_path =  "localhost:8000"
-        run_patient_client(server_path, 1)
+        run_patient_client(server_path, 1, "patient_client")
 
     print(resp)
     return resp
