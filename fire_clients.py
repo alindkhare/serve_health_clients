@@ -10,9 +10,9 @@ parser.add_argument("--port", type=str, default="5000",
 parser.add_argument("--num-patients", metavar="N", type=int, default=1,
                     help="Number of clients to fire the queries")
 
-def run_patient_client(server_path, num_patients):
+def run_patient_client(server_path, num_patients, go_client_name):
   client_path = os.path.join(package_directory,
-                              "patient_client.go")
+                              "{}.go".format(go_client_name))
   procs = []
   for patient_id in range(num_patients):
     patient_name = "patient" + str(patient_id)
@@ -26,4 +26,4 @@ def run_patient_client(server_path, num_patients):
 if __name__ == "__main__":
   args = parser.parse_args()
   server_path = args.ip + ":" + args.port
-  run_patient_client(server_path, args.num_patients)
+  run_patient_client(server_path, args.num_patients, "patient_client")
