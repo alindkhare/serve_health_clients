@@ -39,7 +39,11 @@ func main() {
 	runtime.GOMAXPROCS(5)
 	patient_name := os.Args[1]
 	ip := os.Args[2]
-	fmt.Println(patient_name,ip)
+	time_ms, err := strconv.ParseFloat(os.Args[3], 64)
+	if err != nil {
+		time_ms = 20.0
+	}
+	fmt.Println(patient_name,ip, time_ms)
 
 	// client := &http.Client{}
 	// ch := make(chan string)
@@ -64,7 +68,7 @@ func main() {
 	for i := 0; i <= totalRequest; i++ {
 		// wait for 8 milliseconds to simulate the patient
 		// incoming data
-		time.Sleep(20 * time.Millisecond)
+		time.Sleep(time.Duration(time_ms)* time.Millisecond)
 		// This how actual client will send the result
 		// go MakeRequest("http://127.0.0.1:5000/hospital?patient_name=Adam&value=0.0&vtype=ECG", ch)
 		// This is how profiling result is send

@@ -14,10 +14,14 @@ def fire_client(**kwargs):
         serve_ip = kwargs.get("serve_ip")
         serve_port = kwargs.get("serve_port")
         go_client_name = kwargs.get("go_client_name")
+        waiting_time_ms = None
+        if "waiting_time_ms" in kwargs:
+            waiting_time_ms = kwargs.get("waiting_time_ms")
 
         resp += "runing valid request client={}.go npatient={}, serve_ip={}, serve_port={} ".format(go_client_name, num_patients, serve_ip, serve_port)
         server_path = serve_ip + ":" + str(serve_port)
-        run_patient_client(server_path, num_patients, str(go_client_name))
+        run_patient_client(server_path, num_patients,
+                          str(go_client_name), time_ms=waiting_time_ms)
     else:
         resp += "invalid request, use default client=patient_client.go npatient=1, ip=localhost, port=8000 "
         server_path =  "localhost:8000"
