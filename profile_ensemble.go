@@ -44,11 +44,12 @@ func main() {
 	if err != nil {
 		time_ms = 20.0
 	}
-	fmt.Println(patient_name,ip, time_ms)
+	obs_w_30sec := os.Args[4]
+	fmt.Println(patient_name,ip, time_ms, obs_w_30sec)
 
 	// client := &http.Client{}
 	// ch := make(chan string)
-	address := "http://"+ip+"/profileEnsemble?patient_name="+patient_name+"&value=0.0&vtype=ECG"
+	address := "http://"+ip+"/profileEnsemble?patient_name="+patient_name+"&obs_w_30sec="+obs_w_30sec
 	fmt.Println(address)
 	totalRequest := 100
 	tr := &http.Transport{
