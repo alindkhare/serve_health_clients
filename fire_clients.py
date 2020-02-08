@@ -11,7 +11,7 @@ parser.add_argument("--num-patients", metavar="N", type=int, default=1,
                     help="Number of clients to fire the queries")
 
 def run_patient_client(server_path, num_patients, go_client_name,
-                       time_ms=None):
+                       time_ms=None, obs_w_30sec=None):
   client_path = os.path.join(package_directory,
                               "{}.go".format(go_client_name))
   procs = []
@@ -20,6 +20,8 @@ def run_patient_client(server_path, num_patients, go_client_name,
     cmd = ["go", "run", client_path, patient_name, server_path]
     if time_ms is not None:
       cmd += [str(time_ms)]
+    if obs_w_30sec is not None:
+      cmd += [str(obs_w_30sec)]
     ls_output = subprocess.Popen(cmd)
     procs.append(ls_output)
 

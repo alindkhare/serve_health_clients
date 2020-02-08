@@ -9,7 +9,12 @@ from jsonrpc import JSONRPCResponseManager, dispatcher
 @dispatcher.add_method
 def fire_client(**kwargs):
     resp = ""
-    if ("npatient" in kwargs.keys()) and ("serve_ip" in kwargs.keys()) and ("serve_port" in kwargs.keys()) and ("go_client_name" in kwargs.keys()):
+    if (
+            ("npatient" in kwargs.keys()) and
+            ("serve_ip" in kwargs.keys()) and
+            ("serve_port" in kwargs.keys()) and
+            ("go_client_name" in kwargs.keys())
+        ):
         num_patients = kwargs.get("npatient")
         serve_ip = kwargs.get("serve_ip")
         serve_port = kwargs.get("serve_port")
@@ -17,14 +22,22 @@ def fire_client(**kwargs):
         waiting_time_ms = None
         if "waiting_time_ms" in kwargs:
             waiting_time_ms = kwargs.get("waiting_time_ms")
-
-        resp += "runing valid request client={}.go npatient={}, serve_ip={}, serve_port={} ".format(go_client_name, num_patients, serve_ip, serve_port)
+        obs_w_30sec = None
+        if "obs_w_30sec" in kwargs:
+            obs_w_30sec = kwargs.get("obs_w_30sec")
+        resp += ("runing valid request client={}.go npatient={},"
+                 " serve_ip={}, serve_port={}, obs_w_30sec ={} ".
+                 format(go_client_name, num_patients,
+                        serve_ip, serve_port, obs_w_30sec))
         server_path = serve_ip + ":" + str(serve_port)
         run_patient_client(server_path, num_patients,
-                          str(go_client_name), time_ms=waiting_time_ms)
+                           str(go_client_name), 
+                           time_ms=waiting_time_ms,
+                           obs_w_30sec=obs_w_30sec)
     else:
-        resp += "invalid request, use default client=patient_client.go npatient=1, ip=localhost, port=8000 "
-        server_path =  "localhost:8000"
+        resp += ("invalid request, use default client=patient_client.go npatient=1,"
+                 " ip=localhost, port=8000 ")
+        server_path = "localhost:8000"
         run_patient_client(server_path, 1, "patient_client")
 
     print(resp)
@@ -40,8 +53,9 @@ if __name__ == '__main__':
     gw = os.popen("ip -4 route show default").read().split()
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect((gw[2], 0))
-    IPv4addr = s.getsockname()[0]  #for where the server of patient_client.go request will be executed
-    server_port=4000
-    
+    #address where the server of patient_client.go request will be executed
+    IPv4addr = s.getsockname()[0]
+    server_port = 4000
+
     print("RPC server unning on IPv4 addr: {}".format(IPv4addr))
     run_simple(IPv4addr, server_port, application)
